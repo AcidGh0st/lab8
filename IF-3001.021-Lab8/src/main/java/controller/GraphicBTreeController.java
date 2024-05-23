@@ -7,21 +7,13 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 
 public class GraphicBTreeController {
-
-    @FXML
-    private Button randomizeButton;
-
-    @FXML
-    private Button levelsButton;
-
-    @FXML
-    private Button tourInfoButton;
 
     private BTree binaryTree;
 
@@ -32,7 +24,13 @@ public class GraphicBTreeController {
     private Canvas canvas;
 
     @FXML
-    private Pane treePane;
+    private Button levelsButton;
+    @FXML
+    private Button tourInfoButton;
+    @FXML
+    private Button randomizeButton;
+    @FXML
+    private Pane drawTreePane;
 
     @FXML
     private void initialize() {
@@ -42,10 +40,10 @@ public class GraphicBTreeController {
     @FXML
     public void levelsOnAction(ActionEvent actionEvent) {
         try {
-            int height = binaryTree.height();
             StringBuilder levels = new StringBuilder();
-            for (int i = 0; i <= height; i++) {
-                levels.append(i).append("\n");
+            drawLevels(drawTreePane.getWidth() / 2, 50, 150, binaryTree.getRoot(), 0);
+            for (int i = 0; i <= binaryTree.height(); i++) {
+                levels.append(i);
             }
             tourInfoTextArea.setText(levels.toString());
         } catch (TreeException e) {
@@ -55,42 +53,77 @@ public class GraphicBTreeController {
 
     @FXML
     public void randomizeOnAction(ActionEvent actionEvent) {
+        levelsButton.setDisable(false);
+        tourInfoButton.setDisable(false);
+        drawTreePane.setVisible(true);
         binaryTree.clear();
         for (int i = 0; i < 10; i++) {
-            binaryTree.add(util.Utility.getRandom(100)); // Agrega números aleatorios al árbol
+            binaryTree.add(util.Utility.getRandom(100));
         }
-        drawTree();
+        drawTree(); // Dibuja el árbol
     }
 
     @FXML
     public void tourInfoOnAction(ActionEvent actionEvent) {
-        displayTreeInfo();
-    }
-
-    private void displayTreeInfo() {
-        int height = 0;
         try {
-            height = binaryTree.height();
-            String info = "Tree Height: " + height + "\n";
+            String info = "Tree Height: " + binaryTree.height() + "\n";
             info += "PreOrder: " + binaryTree.preOrder() + "\n";
             info += "InOrder: " + binaryTree.inOrder() + "\n";
-            info += "PostOrder: " + binaryTree.postOrder() + "\n";
-            tourInfoTextArea.setText(info);
+            info += "PostOrder: " + binaryTree.postOrder();
+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Tour Info");
+            alert.setHeaderText("Information");
+            alert.setContentText(info);
+            alert.getDialogPane().setPrefSize(400, 300);
+            alert.showAndWait();
         } catch (TreeException e) {
             throw new RuntimeException(e);
         }
     }
 
     private void drawTree() {
-        treePane.getChildren().clear();
-        canvas = new Canvas(treePane.getWidth(), treePane.getHeight());
-        GraphicsContext gc = canvas.getGraphicsContext2D();
-        drawNode(gc, binaryTree.getRoot(), treePane.getWidth() / 2, 50, 150); // ajusta el espaciado horizontal
-        treePane.getChildren().add(canvas);
+        drawTreePane.getChildren().clear();
+        canvas = new Canvas(drawTreePane.getWidth(), drawTreePane.getHeight());
+        GraphicsContext gC = canvas.getGraphicsContext2D();
+        drawNode(gC, binaryTree.getRoot(), drawTreePane.getWidth() / 2, 50, 150); // ajusta el espaciado horizontal
+        drawTreePane.getChildren().add(canvas);
     }
+
+    private void drawLevels(double x, double y, double spacing, BTreeNode node, int level) {
+        GraphicsContext gC = canvas.getGraphicsContext2D();
+        if (node != null) {
+            double lineY = y + 40; // Ajuste adicional para bajar más las líneas horizontales
+            gC.setStroke(Color.DARKGREEN);
+            gC.setLineWidth(1);
+            gC.strokeLine(50, lineY, drawTreePane.getWidth() - 50, lineY); // Ajusta la posición vertical de las líneas
+            gC.setFill(Color.DARKGREEN);
+            gC.fillText("Level " + level, drawTreePane.getWidth() - 100, y - 10); // Enumera el nivel
+            if (node.getLeft() != null) {
+                double childY = y + 100;
+                drawLevels(x - spacing, childY, spacing * 0.75, node.getLeft(), level+1); // Llama recursivamente para el hijo izquierdo
+            } if (node.getRight() != null) {
+                double childY = y + 100;
+                drawLevels(x + spacing, childY, spacing * 0.75, node.getRight(), level+1); // Llama recursivamente para el hijo derecho
+            }
+        }
+    }
+
 
     private void drawNode(GraphicsContext gc, BTreeNode node, double x, double y, double spacing) {
         if (node != null) {
+            if (node.getLeft() != null) {
+                double childX = x - spacing;
+                double childY = y + 100;
+                drawConnection(gc, x, y, childX, childY);
+                drawNode(gc, node.getLeft(), childX, childY, spacing * 0.75); // ajusta el espacio horizontal
+            }
+            if (node.getRight() != null) {
+                double childX = x + spacing;
+                double childY = y + 100;
+                drawConnection(gc, x, y, childX, childY);
+                drawNode(gc, node.getRight(), childX, childY, spacing * 0.75); // ajusta el espacio horizontal
+            }
             gc.setFill(Color.WHITE);
             gc.setStroke(Color.BLACK);
             gc.setLineWidth(2);
@@ -98,19 +131,6 @@ public class GraphicBTreeController {
             gc.strokeOval(x - 25, y - 25, 50, 50);
             gc.setFill(Color.BLACK);
             gc.fillText(node.getData().toString(), x - 5, y + 5);
-
-            if (node.getLeft() != null) {
-                double childX = x - spacing;
-                double childY = y + 100;
-                drawConnection(gc, x, y, childX, childY);
-                drawNode(gc, node.getLeft(), childX, childY, spacing * 0.75); // ajusta el espaciado horizontal
-            }
-            if (node.getRight() != null) {
-                double childX = x + spacing;
-                double childY = y + 100;
-                drawConnection(gc, x, y, childX, childY);
-                drawNode(gc, node.getRight(), childX, childY, spacing * 0.75); // ajusta el espaciado horizontal
-            }
         }
     }
 
