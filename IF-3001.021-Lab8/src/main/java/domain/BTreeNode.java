@@ -17,5 +17,17 @@ public class BTreeNode {
         this.path = path;
         this.left=this.right=null;
     }
+    public Object getData() {
+        return data;
+    }
+
+    public BTreeNode getLeft() {
+        return left;
+    }
+
+    public BTreeNode getRight() {
+        return right;
+    }
+
 
 }

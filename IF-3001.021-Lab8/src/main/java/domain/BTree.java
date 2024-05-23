@@ -15,6 +15,10 @@ public class BTree implements Tree {
         return size(root);
     }
 
+    public BTreeNode getRoot() {
+        return root;
+    }
+
     private int size(BTreeNode node){
         if(node==null)
             return 0;
