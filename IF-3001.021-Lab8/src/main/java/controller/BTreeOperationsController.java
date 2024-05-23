@@ -10,17 +10,20 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 
-public class BTreeOperationsController
-{
+import java.util.Optional;
+public class BTreeOperationsController {
     @javafx.fxml.FXML
     private Canvas canvas;
     @javafx.fxml.FXML
     private Pane drawTreePane;
     @javafx.fxml.FXML
     private TextArea tourInfoTextArea;
+    @javafx.fxml.FXML
+    private TextArea textInfo;
     @javafx.fxml.FXML
     private Button randomizeButton;
     @javafx.fxml.FXML
@@ -38,7 +41,7 @@ public class BTreeOperationsController
     @javafx.fxml.FXML
     public void initialize() {
         binaryTree = new BTree();
-
+        textInfo.setVisible(true);
     }
 
     @javafx.fxml.FXML
@@ -54,35 +57,92 @@ public class BTreeOperationsController
         for (int i = 0; i < 10; i++) {
             binaryTree.add(util.Utility.getRandom(100));
         }
-        drawTree(); // Dibuja el árbol
-    }
-
-    @Deprecated
-    public void levelsOnAction(ActionEvent actionEvent) {
-    }
-
-    @Deprecated
-    public void tourInfoOnAction(ActionEvent actionEvent) {
+        drawTree(); //Dibuja el árbol
+        textInfo.setText("Árbol randomizado.");
     }
 
     @javafx.fxml.FXML
     public void treeHeighOnAction(ActionEvent actionEvent) {
+        try {
+            int height = binaryTree.height();
+            textInfo.setText("Altura del árbol: " + height);
+        } catch (TreeException e) {
+            textInfo.setText(e.getMessage());
+        }
     }
 
     @javafx.fxml.FXML
     public void nodeHeightOnAction(ActionEvent actionEvent) {
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle("Altura del Nodo");
+        dialog.setHeaderText("Ingresar el valor del nodo");
+        dialog.setContentText("Valor:");
+        Optional<String> result = dialog.showAndWait();
+        if (result.isPresent()) {
+            try {
+                int height = binaryTree.height(Integer.parseInt(result.get()));
+                textInfo.setText("Altura del nodo " + result.get() + ": " + height);
+            } catch (TreeException e) {
+                textInfo.setText(e.getMessage());
+            }
+        }
     }
-
     @javafx.fxml.FXML
     public void removeOnAction(ActionEvent actionEvent) {
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle("Eliminar Nodo");
+        dialog.setHeaderText("Ingresar el valor del nodo a eliminar");
+        dialog.setContentText("Valor:");
+        Optional<String> result = dialog.showAndWait();
+        if (result.isPresent()) {
+            int value = Integer.parseInt(result.get());
+            try {
+                if (binaryTree.contains(value)) {
+                    binaryTree.remove(value);
+                    drawTree();
+                    textInfo.setText("Nodo " + result.get() + " eliminado.");
+                } else {
+                    textInfo.setText("Nodo " + result.get() + " no existe en el árbol.");
+                }
+            } catch (TreeException e) {
+                textInfo.setText(e.getMessage());
+            }
+        }
     }
 
     @javafx.fxml.FXML
     public void addOnAction(ActionEvent actionEvent) {
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle("Agregar Nodo");
+        dialog.setHeaderText("Ingresar el valor del nodo a agregar");
+        dialog.setContentText("Valor:");
+        Optional<String> result = dialog.showAndWait();
+        if (result.isPresent()) {
+            binaryTree.add(Integer.parseInt(result.get()));
+            drawTree();
+            textInfo.setText("Nodo " + result.get() + " agregado.");
+        }
     }
 
     @javafx.fxml.FXML
     public void containsOnAction(ActionEvent actionEvent) {
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle("Contiene Nodo");
+        dialog.setHeaderText("Ingresar el valor del nodo a buscar");
+        dialog.setContentText("Valor:");
+        Optional<String> result = dialog.showAndWait();
+        if (result.isPresent()) {
+            try {
+                boolean contains = binaryTree.contains(Integer.parseInt(result.get()));
+                if (contains) {
+                    textInfo.setText("El nodo " + result.get() + " existe en el árbol.");
+                } else {
+                    textInfo.setText("El nodo " + result.get() + " no existe en el árbol.");
+                }
+            } catch (TreeException e) {
+                textInfo.setText(e.getMessage());
+            }
+        }
     }
 
     private void drawTree() {
@@ -92,6 +152,7 @@ public class BTreeOperationsController
         drawNode(gC, binaryTree.getRoot(), drawTreePane.getWidth() / 2, 50, 150); // ajusta el espaciado horizontal
         drawTreePane.getChildren().add(canvas);
     }
+
     private void drawNode(GraphicsContext gc, BTreeNode node, double x, double y, double spacing) {
         if (node != null) {
             if (node.getLeft() != null) {
