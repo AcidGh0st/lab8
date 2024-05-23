@@ -24,10 +24,13 @@ public class GraphicBTreeController {
     private Button tourInfoButton;
 
     private BTree binaryTree;
+
     @FXML
     private TextArea tourInfoTextArea;
+
     @FXML
     private Canvas canvas;
+
     @FXML
     private Pane treePane;
 
@@ -40,11 +43,11 @@ public class GraphicBTreeController {
     public void levelsOnAction(ActionEvent actionEvent) {
         try {
             int height = binaryTree.height();
-            String levels = "";
+            StringBuilder levels = new StringBuilder();
             for (int i = 0; i <= height; i++) {
-                levels += i + "\n";
+                levels.append(i).append("\n");
             }
-            tourInfoTextArea.setText(levels);
+            tourInfoTextArea.setText(levels.toString());
         } catch (TreeException e) {
             e.printStackTrace();
         }
@@ -76,14 +79,13 @@ public class GraphicBTreeController {
         } catch (TreeException e) {
             throw new RuntimeException(e);
         }
-
     }
 
     private void drawTree() {
         treePane.getChildren().clear();
-        Canvas canvas = new Canvas(treePane.getWidth(), treePane.getHeight());
+        canvas = new Canvas(treePane.getWidth(), treePane.getHeight());
         GraphicsContext gc = canvas.getGraphicsContext2D();
-        drawNode(gc, binaryTree.getRoot(), treePane.getWidth() / 2, 50, 50);
+        drawNode(gc, binaryTree.getRoot(), treePane.getWidth() / 2, 50, 150); // ajusta el espaciado horizontal
         treePane.getChildren().add(canvas);
     }
 
@@ -98,16 +100,19 @@ public class GraphicBTreeController {
             gc.fillText(node.getData().toString(), x - 5, y + 5);
 
             if (node.getLeft() != null) {
-                drawConnection(gc, x, y, x - spacing, y + 100);
-                drawNode(gc, node.getLeft(), x - spacing, y + 100, spacing * 1.5); // Aumenta la separación horizontal
+                double childX = x - spacing;
+                double childY = y + 100;
+                drawConnection(gc, x, y, childX, childY);
+                drawNode(gc, node.getLeft(), childX, childY, spacing * 0.75); // ajusta el espaciado horizontal
             }
             if (node.getRight() != null) {
-                drawConnection(gc, x, y, x + spacing, y + 100);
-                drawNode(gc, node.getRight(), x + spacing, y + 100, spacing * 1.5); // Aumenta la separación horizontal
+                double childX = x + spacing;
+                double childY = y + 100;
+                drawConnection(gc, x, y, childX, childY);
+                drawNode(gc, node.getRight(), childX, childY, spacing * 0.75); // ajusta el espaciado horizontal
             }
         }
     }
-
 
     private void drawConnection(GraphicsContext gc, double startX, double startY, double endX, double endY) {
         gc.setStroke(Color.BLACK);
