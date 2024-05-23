@@ -40,16 +40,6 @@ public class HelloController {
         System.exit(0);
     }
 
-    @Deprecated
-    public void messengerServiceOnAction(ActionEvent actionEvent) {
-        loadPage("messengerService.fxml");
-    }
-
-    @Deprecated
-    public void converterOnAction(ActionEvent actionEvent) {
-        loadPage("converter.fxml");
-    }
-
     @FXML
     public void graphicBTreeOnAction(ActionEvent actionEvent) {
         loadPage("graphicBTree.fxml");
