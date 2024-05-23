@@ -3,20 +3,12 @@
 <?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <BorderPane prefHeight="691.0" prefWidth="917.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.GraphicBTreeController">
-   <center>
-      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
-         <children>
-            <Canvas fx:id="Canvas" height="596.0" width="919.0" />
-         </children>
-      </VBox>
-   </center>
    <top>
       <Pane prefHeight="98.0" prefWidth="917.0" BorderPane.alignment="CENTER">
          <children>
@@ -25,10 +17,18 @@
                   <Font size="24.0" />
                </font>
             </Label>
-            <Button layoutX="275.0" layoutY="60.0" mnemonicParsing="false" onAction="#randomizeOnAction" text="Randomize" />
-            <Button layoutX="405.0" layoutY="60.0" mnemonicParsing="false" onAction="#levelsOnAction" text="Levels" />
-            <Button layoutX="491.0" layoutY="60.0" mnemonicParsing="false" onAction="#tourInfoOnAction" text="Tour Info" />
+            <Button fx:id="randomizeButton" layoutX="275.0" layoutY="60.0" mnemonicParsing="false" onAction="#randomizeOnAction" text="Randomize" />
+            <Button fx:id="levelsButton" layoutX="405.0" layoutY="60.0" mnemonicParsing="false" onAction="#levelsOnAction" text="Levels" />
+            <Button fx:id="tourInfoButton" layoutX="491.0" layoutY="60.0" mnemonicParsing="false" onAction="#tourInfoOnAction" text="Tour Info" />
          </children>
       </Pane>
    </top>
+   <center>
+      <Pane fx:id="treePane" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <Canvas fx:id="canvas" height="595.0" width="917.0" />
+            <TextArea fx:id="tourInfoTextArea" prefHeight="598.0" prefWidth="917.0" />
+         </children>
+      </Pane>
+   </center>
 </BorderPane>

@@ -13,11 +13,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 
 public class GraphicBTreeController {
-    @FXML
-    private Canvas canvas;
-
-    @FXML
-    private Pane treePane;
 
     @FXML
     private Button randomizeButton;
@@ -28,10 +23,13 @@ public class GraphicBTreeController {
     @FXML
     private Button tourInfoButton;
 
+    private BTree binaryTree;
     @FXML
     private TextArea tourInfoTextArea;
-
-    private BTree binaryTree;
+    @FXML
+    private Canvas canvas;
+    @FXML
+    private Pane treePane;
 
     @FXML
     private void initialize() {
