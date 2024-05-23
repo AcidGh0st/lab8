@@ -99,14 +99,15 @@ public class GraphicBTreeController {
 
             if (node.getLeft() != null) {
                 drawConnection(gc, x, y, x - spacing, y + 100);
-                drawNode(gc, node.getLeft(), x - spacing, y + 100, spacing / 2);
+                drawNode(gc, node.getLeft(), x - spacing, y + 100, spacing * 1.5); // Aumenta la separación horizontal
             }
             if (node.getRight() != null) {
                 drawConnection(gc, x, y, x + spacing, y + 100);
-                drawNode(gc, node.getRight(), x + spacing, y + 100, spacing / 2);
+                drawNode(gc, node.getRight(), x + spacing, y + 100, spacing * 1.5); // Aumenta la separación horizontal
             }
         }
     }
+
 
     private void drawConnection(GraphicsContext gc, double startX, double startY, double endX, double endY) {
         gc.setStroke(Color.BLACK);
