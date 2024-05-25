@@ -9,11 +9,6 @@ import domain.stack.LinkedStack;
 import domain.stack.StackException;
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
-
-import static org.junit.jupiter.api.Assertions.*;
 class BTreeTest {
 
     //    @Test
@@ -85,8 +80,6 @@ class BTreeTest {
             circularDoublyLinkedList.add("Samantha");
             circularDoublyLinkedList.add("Jorge");
 
-
-
             linkedStack.push("Costa Rica");
             linkedStack.push("Colombia");
             linkedStack.push("Argentina");
@@ -113,145 +106,50 @@ class BTreeTest {
             btree.add(linkedQueue);
             btree.add(subBTree);
 
-        System.out.println(btree.toString());
+            System.out.println("Size: " + btree.size());
+            System.out.println("Height: " + btree.height());
+            System.out.println("Height of SinglyLinkedList: " + btree.height(singlyLinkedList));
+            System.out.println("Contains CircularDoublyLinkedList: " + btree.contains(circularDoublyLinkedList));
 
 
-        System.out.println("Size: " + btree.size());
-        System.out.println("Height: " + btree.height());
-        System.out.println("Height of SinglyLinkedList: " + btree.height(singlyLinkedList));
-        System.out.println("Contains CircularDoublyLinkedList: " + btree.contains(circularDoublyLinkedList));
-
-
-        System.out.println();
-        System.out.println();
-
-        System.out.println("Remove:");
+            System.out.println();
 
             btree.remove(linkedQueue);
-
+            int random = util.Utility.getRandom(50);
             for (int i = 0; i < 5; i++) {
-                singlyLinkedList.remove(i);
+                while(!singlyLinkedList.contains(random)){
+                    random= util.Utility.getRandom(50);
+                }
+                singlyLinkedList.remove(random);
             }
 
-            for (int i = 0; i < 5; i++) {
-                circularDoublyLinkedList.remove(i);
-            }
 
-            for (int i = 0; i < 5; i++) {
-                linkedStack.pop();
-            }
+            circularDoublyLinkedList.remove("Valentina");
+            circularDoublyLinkedList.remove("Jimena");
+            circularDoublyLinkedList.remove("Felipe");
+            circularDoublyLinkedList.remove("Michael");
+            circularDoublyLinkedList.remove("Alex");
 
-            ///**********************
-            // revisar el punto e (iv)
-            ///************************
+            linkedStack.pop();
+            linkedStack.pop();
+            linkedStack.pop();
+            linkedStack.pop();
+            linkedStack.pop();
+
             for (int i = 0; i < 5; i++) {
                 char ch = (char) (util.Utility.getRandom(26) + 'A');
                 subBTree.remove(ch);
             }
 
-        System.out.println(btree.toString());
+            System.out.println(btree.toString());
 
 
-        System.out.println("Height of SinglyLinkedList: " + btree.height(singlyLinkedList));
-        System.out.println("Height of CircularDoublyLinkedList: " + btree.height(circularDoublyLinkedList));
-        System.out.println("Height of LinkedStack: " + btree.height(linkedStack));
-        System.out.println("Height of BTree: " + btree.height(subBTree));
+            System.out.println("Height of SinglyLinkedList: " + btree.height(singlyLinkedList));
+            System.out.println("Height of CircularDoublyLinkedList: " + btree.height(circularDoublyLinkedList));
+            System.out.println("Height of LinkedStack: " + btree.height(linkedStack));
+            System.out.println("Height of BTree: " + btree.height(subBTree));
         } catch (QueueException | StackException | TreeException | ListException e) {
             throw new RuntimeException(e);
         }
     }
-//}
-
-//    @Test
-//    public void BTreeTest2() throws QueueException, TreeException, ListException, StackException {
-//
-//        Random rand = new Random();
-//
-//
-//        BTree btree = new BTree();
-//
-//        // Insertar objetos en el árbol
-//        SinglyLinkedList singlyLinkedList = new SinglyLinkedList();
-//        CircularDoublyLinkedList circularDoublyLinkedList = new CircularDoublyLinkedList();
-//        LinkedStack linkedStack = new LinkedStack();
-//        LinkedQueue linkedQueue = new LinkedQueue();
-//        BTree subBTree = new BTree();
-//
-//        for (int i = 0; i < 20; i++) {
-//            singlyLinkedList.add(rand.nextInt(50) + 1);
-//        }
-//
-//        List<String> personNames = Arrays.asList(
-//                "Alice", "Bob", "Charlie", "David", "Eve", "Frank", "Grace", "Hannah", "Ivy", "Jack",
-//                "Kate", "Leo", "Mona", "Nina", "Oscar", "Paul", "Quincy", "Rose", "Sam", "Tina"
-//        );
-//
-//        for (String name : personNames) {
-//            circularDoublyLinkedList.add(name);
-//        }
-//
-//        for (int i = 0; i < 100; i++) {
-//            linkedQueue.enQueue(rand.nextInt(4001) + 1000);
-//        }
-//
-//        for (char ch = 'A'; ch <= 'Z'; ch++) {
-//            subBTree.add(ch);
-//        }
-//
-//        List<String> countryNames = Arrays.asList(
-//                "USA", "Canada", "Mexico", "Brazil", "Argentina", "UK", "Germany", "France", "Italy", "Spain"
-//        );
-//
-//
-//        for (String country : countryNames) {
-//            linkedStack.push(country);
-//        }
-//
-//        btree.add(singlyLinkedList);
-//        btree.add(circularDoublyLinkedList);
-//        btree.add(linkedStack);
-//        btree.add(linkedQueue);
-//        btree.add(subBTree);
-//
-//        System.out.println(btree.toString());
-//
-//
-//        System.out.println("Size of tree: " + btree.size());
-//        System.out.println("Height of tree: " + btree.height());
-//        System.out.println("Height of SinglyLinkedList: " + btree.height(singlyLinkedList));
-//        System.out.println("Contains CircularDoublyLinkedList: " + btree.contains(circularDoublyLinkedList));
-//
-//
-//        System.out.println(" ");
-//        System.out.println(" ");
-//
-//        System.out.println("REMOVER ELEMENTOS:");
-//
-//        btree.remove(linkedQueue);
-//
-//        for (int i = 0; i < 5; i++) {
-//            singlyLinkedList.remove(i);
-//        }
-//
-//        for (int i = 0; i < 5; i++) {
-//            circularDoublyLinkedList.remove("Person" + i);
-//        }
-//
-//        for (int i = 0; i < 5; i++) {
-//            linkedStack.pop();
-//        }
-//
-//        for (int i = 0; i < 5; i++) {
-//            char ch = (char) (rand.nextInt(26) + 'A');
-//            subBTree.remove(ch);
-//        }
-//
-//        System.out.println(btree.toString());
-//
-//
-//        System.out.println("Height of SinglyLinkedList: " + btree.height(singlyLinkedList));
-//        System.out.println("Height of CircularDoublyLinkedList: " + btree.height(circularDoublyLinkedList));
-//        System.out.println("Height of LinkedStack: " + btree.height(linkedStack));
-//        System.out.println("Height of BTree: " + btree.height(subBTree));
-//    }
 }
