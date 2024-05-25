@@ -193,13 +193,34 @@ public class BTree implements Tree {
 
     @Override
     public Object min() throws TreeException {
-        return null;
+        if (isEmpty()) {
+            throw new TreeException("Binary Tree is empty");
+        }
+        return min(root);
+    }
+
+    private Object min(BTreeNode node) {
+        if (node.left == null) {
+            return node.data;
+        }
+        return min(node.left);
     }
 
     @Override
     public Object max() throws TreeException {
-        return null;
+        if (isEmpty()) {
+            throw new TreeException("Binary Tree is empty");
+        }
+        return max(root);
     }
+
+    private Object max(BTreeNode node) {
+        if (node.right == null) {
+            return node.data;
+        }
+        return max(node.right);
+    }
+
 
     @Override
     public String preOrder() throws TreeException {
