@@ -113,19 +113,19 @@ class BTreeTest {
             btree.add(linkedQueue);
             btree.add(subBTree);
 
-//        System.out.println(btree.toString());
+        System.out.println(btree.toString());
 
 
-//        System.out.println("Size: " + btree.size());
-//        System.out.println("Height: " + btree.height());
-//        System.out.println("Height of SinglyLinkedList: " + btree.height(singlyLinkedList));
-//        System.out.println("Contains CircularDoublyLinkedList: " + btree.contains(circularDoublyLinkedList));
+        System.out.println("Size: " + btree.size());
+        System.out.println("Height: " + btree.height());
+        System.out.println("Height of SinglyLinkedList: " + btree.height(singlyLinkedList));
+        System.out.println("Contains CircularDoublyLinkedList: " + btree.contains(circularDoublyLinkedList));
 
 
-//        System.out.println();
-//        System.out.println();
-//
-//        System.out.println("Remove:");
+        System.out.println();
+        System.out.println();
+
+        System.out.println("Remove:");
 
             btree.remove(linkedQueue);
 
@@ -149,13 +149,13 @@ class BTreeTest {
                 subBTree.remove(ch);
             }
 
-//        System.out.println(btree.toString());
+        System.out.println(btree.toString());
 
 
-//        System.out.println("Height of SinglyLinkedList: " + btree.height(singlyLinkedList));
-//        System.out.println("Height of CircularDoublyLinkedList: " + btree.height(circularDoublyLinkedList));
-//        System.out.println("Height of LinkedStack: " + btree.height(linkedStack));
-//        System.out.println("Height of BTree: " + btree.height(subBTree));
+        System.out.println("Height of SinglyLinkedList: " + btree.height(singlyLinkedList));
+        System.out.println("Height of CircularDoublyLinkedList: " + btree.height(circularDoublyLinkedList));
+        System.out.println("Height of LinkedStack: " + btree.height(linkedStack));
+        System.out.println("Height of BTree: " + btree.height(subBTree));
         } catch (QueueException | StackException | TreeException | ListException e) {
             throw new RuntimeException(e);
         }

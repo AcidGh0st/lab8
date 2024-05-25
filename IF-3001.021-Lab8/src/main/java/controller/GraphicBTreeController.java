@@ -131,6 +131,7 @@ public class GraphicBTreeController {
             gc.strokeOval(x - 25, y - 25, 50, 50);
             gc.setFill(Color.BLACK);
             gc.fillText(node.getData().toString(), x - 5, y + 5);
+            gc.fillText(node.path, x - 25, y + 40); // Muestra el path más abajo del nodo
         }
     }
 
